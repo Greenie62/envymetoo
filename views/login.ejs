@@ -1,0 +1,101 @@
+<div class='loginHeader'>
+    <h1 class='loginheaderh1'>Login</h1>
+    <h3 class='loginheaderh3'>Express EJS App</h3>
+</div>
+
+<% if(messages.error){ %>
+    <h2 class='h2Error'><%=messages.error %></h2>
+     <% } %>
+
+<div class="loginContainer">
+    <div class="loginCard">
+        <h3 class='h3registerlink'>First Time?</h3>
+        <form action="/db/login" method="POST">
+        <div class="formDiv">
+            <label for="username">Username:</label>
+            <input type="text" name="username" placeholder="username..." autocomplete="off">
+        </div>
+        <div class="formDiv">
+            <label for="password">Password:</label>
+            <input type="text" name="password" placeholder="password..." autocomplete="off">
+        </div>
+        <button type="submit" class="loginbtn">Login</button>
+        </form>
+    </div>
+
+    <div class="registerCard">
+        <h3 class="h3loginlink">Returning Member?</h3>
+        <form action="/db/register" method="POST">
+            <div class="formRow">
+        <div class="formDiv">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="username..." autocomplete="off">
+            <br/>
+            <small class="text-muted">Create a username</small>
+        </div>
+
+        <div class="formDiv">
+            <label for="password">Password:</label>
+            <input type="text" name="password" id="password" placeholder="password..." autocomplete="off">
+            <br/>
+            <small class="text-muted">Create a secure password</small>
+        </div>
+            </div>  
+
+            <div class='formRow'>
+        <div class="formDiv">
+            <label for="balance">Balance:</label>
+            <input type="text" name="balance" id="balance" placeholder="balance..." autocomplete="off">
+            <br/>
+            <small class="text-muted">Enter your balance</small>
+        </div>
+        <button class="registerBtn">Register</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div class="loginFooter">
+    <p>Footer&copy;</p>
+</div>
+
+
+<script>
+    console.log('loginScript fired')
+var registerLink = document.querySelector(".h3registerlink")
+var loginLink = document.querySelector(".h3loginlink")
+
+var registerCard = document.querySelector(".registerCard")
+var loginCard = document.querySelector(".loginCard");
+var h2Error = document.querySelector(".h2Error")
+
+
+registerCard.style.opacity=0
+registerCard.style.zIndex=-1
+
+registerLink.onclick=()=>{
+    registerCard.style.zIndex=1
+    registerCard.style.opacity=1
+    loginCard.style.opacity=0
+    loginCard.style.zIndex=-1
+}
+
+loginLink.onclick=()=>{
+    loginCard.style.zIndex=1
+    loginCard.style.opacity=1
+    registerCard.style.opacity=0
+    registerCard.style.zIndex=-1
+}
+
+
+if(h2Error  !== null){
+
+    setTimeout(()=>{
+        h2Error.innerHTML = ""
+    },2000)
+}
+
+
+</script>

@@ -1,0 +1,238 @@
+<link rel="stylesheet" href="css/dashboard.css">
+
+<div class='dashboardHeader'>
+    <form class='logoutform' action="/logout?_method=DELETE" method="POST">
+        <button type="submit"><i class='iconarrow fas fa-arrow-left'></i></button>
+    </form>
+
+<h1><%= user.toUpperCase() %>'s Dashboard</h1>
+<i class="fas fa-plus additemicon"></i>
+<a href="/itemdata"><i class="fas fa-info infoicon"></i></a>
+</div>
+
+
+<div class="addItemRow">
+    <form action="/db/additem" method="POST">
+    <div class="addItemColumn formDiv">
+        <label for="itemname">Name:</label>
+        <input type="text" name="itemname" id="itemname" placeholder="itemname...">
+    </div>
+    <div class="addItemColumn formDiv">
+        <label for="price">Price:</label>
+        <input type="text" name="price" id="price" placeholder="price...">
+    </div>
+    <div class="formDiv addItemBottomCol">
+        <div class="selectDiv">
+        <label for="quantity">Quantity</label>
+        <select name="quantity" id="quantity">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+        </select>
+        </div>
+
+        <div class="selectDiv">
+            <label for="itemtype">Itemtype</label>
+            <select name="itemtype" id="itemtype">
+                <option value="electronics">Electronics</option>
+                <option value="toys">Toys</option>
+                <option value="food">Food</option>
+                <option value="furniture">Furniture</option>
+                <option value="tools">Tools</option>
+                <option value="sports">Sports</option>
+            </select>
+        </div>
+    </div>
+    <div class="addItemBottomCol">
+        <button type='submit' class="additembtn">Add Item <i class='fab fa-money'></i></button>
+    </div>
+    </form>
+</div>
+
+
+<div class="storeContainer">
+    <div class="storeRow">
+        <div class="allItemsColumn">
+            <h4>All Items</h4>
+            <% items.forEach(item=>{ %>
+                <li class='listitem-item'>
+                    <h4><%=item.itemname %></h4>
+                    <div class="itemInfoRow">
+                        <h5>P:$<%=item.price%></h5>
+                        <h5>Q:<%=item.quantity%></h5>
+                    </li>
+                </li>
+
+             <% }) %>
+        </div>
+
+        <div class="byCategoryColumn">
+            <div class="categoryBox">
+                <h3 class='categoryh3'>Sports:</h3>
+                <% sports.forEach(s=>{ %>
+                    <h4 class="itemnameh4"><%=s.itemname %></h4>
+
+
+                   <% }) %>
+            </div>
+
+            <div class="categoryBox">
+                <h3 class='categoryh3'>Tools:</h3>
+                <% tools.forEach(t=>{ %>
+                    <h4 class="itemnameh4"><%=t.itemname %></h4>
+
+
+                   <% }) %>
+            </div>
+
+            <div class="categoryBox">
+                <h3 class='categoryh3'>Food:</h3>
+                <% food.forEach(f=>{ %>
+                    <h4 class="itemnameh4"><%=f.itemname %></h4>
+
+
+                   <% }) %>
+            </div>
+
+            <div class="categoryBox">
+                <h3 class='categoryh3'>Furniture:</h3>
+                <% furniture.forEach(f=>{ %>
+                    <h4 class="itemnameh4"><%=f.itemname %></h4>
+
+
+                   <% }) %>
+            </div>
+
+          
+
+            <div class="categoryBox">
+                <h3 class='categoryh3'>Electronics:</h3>
+                <% electronics.forEach(e=>{ %>
+                    <h4 class="itemnameh4"><%=e.itemname %></h4>
+
+
+                   <% }) %>
+            </div>
+        </div>
+
+        <div class="itemInfoColumn">
+            <h2>Item Info Column</h2>
+            <div class="infoDivCard">
+                <h3 class='itemnameh3'></h3>
+                <h3 class='itempriceh3'></h3>
+                <h3 class='itemquantityh3'></h3>
+                <h3 class='itemtypeh3'></h3>
+                <span class="buyBtnSpan"></span>
+            </div>
+        </div>
+    
+
+    </div>
+
+
+ 
+</div>
+
+
+
+
+
+
+<div class="dashboardFooter">
+    <p>Footer&copy;</p>
+    <ul class='navLinks'>
+        <li class='nav-item'>
+            <a href="https://www.instagram.com" target="_blank">
+            <i class='fab fa-instagram'></i>
+            </a>
+        
+        </li>
+        
+        <li class='nav-item'>
+                <a href="https://www.twitter.com" target="_blank">
+            <i class='fab fa-twitter'></i>
+                </a>
+        </li>
+        <li class='nav-item'>
+            <a href='https://www.facebook.com' target='_blank'>
+                <i class='fab fa-facebook'></i>
+                </a>
+            </li>
+    </ul>
+</div>
+
+
+
+<script>
+
+    var addItemIcon = document.querySelector(".additemicon");
+    var addItemCard = document.querySelector(".addItemRow");
+    var h4Titles = document.querySelectorAll(".itemnameh4");
+    var buyBtnSpanDOM = document.querySelector(".buyBtnSpan")
+
+    var itemNameh3DOM = document.querySelector(".itemnameh3")
+    var quantityh3DOM = document.querySelector(".itemquantityh3")
+    var priceh3DOM = document.querySelector(".itempriceh3")
+    var itemTypeh3DOM = document.querySelector(".itemtypeh3")
+
+
+    console.log(addItemCard)
+
+    addItemIcon.onclick=()=>{
+        console.log("addItem Icon")
+        addItemCard.classList.toggle('hide-addItemCard')
+    }
+
+
+    console.log(h4Titles)
+
+    h4Titles.forEach(h4=>{
+        h4.onclick=(e)=>{
+            console.log('fx fired!')
+            let itemname = e.target.textContent;
+            
+            getInfo(itemname)
+
+        }
+    })
+
+
+    function getInfo(item){
+        console.log("Name: " + item)
+
+        fetch(`/db/getinfo/${item}`)
+        .then(res=>res.json())
+        .then(res=>{
+            console.log(res)
+
+     itemNameh3DOM.innerHTML = res.item.itemname;
+     quantityh3DOM.innerHTML = `Quantity: ${res.item.quantity}`
+     priceh3DOM.innerHTML = `$${res.item.price}`
+     itemTypeh3DOM.innerHTML = `Itemtype:${res.item.itemtype}`
+     buyBtnSpanDOM.innerHTML = `<button onclick=buyItem() class='btn buybtn'>BUY</button>`
+        })
+    }
+
+
+
+let proxy =`https://cors-anywhere.herokuapp.com/`
+
+    fetch(`${proxy}https://newsapi.org/v2/top-headlines?country=us&apiKey=df224751000f4ab0a6e1ca836be63ca3`)
+    .then(res=>res.json())
+    .then(res=>{
+        console.log(res)
+        console.log(res.articles)
+    })
+
+function buyItem(){
+    // console.log('buyItem fired!',arg)
+    var itemOfInterest={
+        itemname: itemNameh3DOM.textContent,
+        price: priceh3DOM.textContent.split("$")[1],
+        quantity: quantityh3DOM.textContent.split(":")[1]
+    }
+
+    console.log(itemOfInterest)
+}
+</script>

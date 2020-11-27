@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="search icon" href="#">
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+
+        body{
+            height:100vh;
+            width:100vw;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            flex-direction:column;
+        }
+
+        .chart{
+            border-top:1px solid black;
+            display:flex;
+            align-items:center;
+            width:75%;
+            justify-content: space-evenly;
+            transform:rotate(180deg);
+            height:600px;
+            overflow-x:auto;
+        }
+
+        .price-bar{
+            width:50px;
+            background:green;
+            position:absolute;
+            top:0;
+            height:200px;
+         
+        }
+    </style>
+    <title>Item Chart Data</title>
+</head>
+<body>
+    <h1>Item Chart Data</h1>
+    <a href="/login">Logout</a>
+
+    <div class="chart"></div>
+
+
+
+    <script>
+        var chart = document.querySelector(".chart");
+
+        fetch("/fetchitemdata")
+        .then(res=>res.json())
+        .then(res=>{
+            let left=0;
+            console.log(res)
+            res.forEach(item=>{
+                let priceDiv = document.createElement("div");
+                priceDiv.className='price-bar';
+                if(item.price < 500){
+                priceDiv.style.height=item.price + "px"
+                }
+                else{
+                    priceDiv.style.height="525px"
+
+                }
+                priceDiv.style.left = `${left}px`;
+                let priceP = document.createElement("p");
+                priceP.style.transform="rotate(180deg)"
+                priceP.innerText = `$${item.price}`
+                priceDiv.appendChild(priceP)
+                left+=75
+                
+                chart.appendChild(priceDiv)
+            })
+        })
+    </script>
+</body>
+</html>

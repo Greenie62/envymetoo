@@ -1,0 +1,5 @@
+[
+    {"type":"input","message":"Username?", "name":"username"},
+    {"type":"input","message":"Password?", "name":"password"},
+    {"type":"input","message":"Balance?", "name":"balance"}
+]

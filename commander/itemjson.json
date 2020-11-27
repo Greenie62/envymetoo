@@ -1,0 +1,6 @@
+[
+    {"type":"input","message":"Item name?", "name":"itemname"},
+    {"type":"input","message":"Price?", "name":"price"},
+    {"type":"input","message":"Quantity?", "name":"quantity"},
+    {"type":"input","message":"Item type?", "name":"itemtype"}
+]

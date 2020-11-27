@@ -1,0 +1,161 @@
+<style>
+    table{
+        width:100vw;
+
+    }
+
+    table, td{
+        border:1px solid black;
+    }
+
+    tr{
+        display:flex;
+    }
+
+    td, th{
+        flex:1;
+        text-align:center;
+    }
+
+    .itemadminform{
+        display:flex;
+    }
+
+    .itemadminform > .formDiv > input{
+        width:40px;
+    }
+</style>
+
+<a href="/login"> <i class='fas fa-arrow-left'></i>Back</a>
+
+<h3>Admin Page</h3>
+
+<div class="addItemBox">
+    <h3>Add Item</h3>
+    <div class="addItemRow">
+        <form class='itemadminform' action="/db/admin/additem" method="POST">
+        <div class="formDiv">
+            <label for="itemname">Itemname:</label>
+            <input type="text" name="itemname" id='itemname' placeholder="itemname...">
+        </div>
+        <div class="formDiv">
+            <label for="price">Price:</label>
+            <input type="text" name="price" id='price' placeholder="price...">
+        </div>
+        <div class="formDiv">
+            <label for="quantity">Quantity:</label>
+            <input type="text" name="quantity" id='quantity' placeholder="quantity...">
+        </div>
+        <div class="formDiv">
+            <label for="itemtype">Itemtype:</label>
+            <input type="text" name="itemtype" id='itemtype' placeholder="itemtype">
+        </div>
+
+        <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+<div class="addItemBox">
+    <h3>Add Item</h3>
+    <div class="addItemRow">
+        <form class='itemadminform' action="/db/admin/adduser" method="POST">
+        <div class="formDiv">
+            <label for="username">Username:</label>
+            <input type="text" name="username" id='username' placeholder="username...">
+        </div>
+        <div class="formDiv">
+            <label for="password">Password:</label>
+            <input type="text" name="password" id='password' placeholder="password...">
+        </div>
+        <div class="formDiv">
+            <label for="balance">Balance:</label>
+            <input type="text" name="balance" id='balance' placeholder="balance...">
+        </div>
+     
+
+        <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Itemname</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Itemtype</th>
+            <th>Remove</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% items.forEach((item,idx)=>{ %>
+        <tr>
+            <td><%=idx%></td>
+            <td><%=item.itemname %></td>
+            <td><%=item.price%></td>
+            <td><%=item.quantity%></td>
+            <td><%=item.itemtype %></td>
+            <td class='deleteSpan' data-table="item" data-itemname="<%=item.itemname %>"> &times;</td>
+        </tr>
+
+          <% }) %>
+    </tbody>
+</table>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Membername</th>
+            <th>Password</th>
+            <th>Balance</th>
+            <th>Remove</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <% members.forEach((member,idx)=>{ %>
+        <tr>
+            <td><%=idx%></td>
+            <td><%=member.username%></td>
+            <td><%=member.password%></td>
+            <td><%=member.balance%></td>
+            <td class='deleteSpan' data-table="member" data-itemname="<%=member.username %>">&times;</td>
+        </tr>
+
+          <% }) %>
+    </tbody>
+</table>
+
+
+
+<script>
+
+    var deleteSpans = document.querySelectorAll('.deleteSpan');
+
+    deleteSpans.forEach(span=>{
+        span.onclick=(e)=>deleteEntry(e)
+    })
+
+    function deleteEntry(e){
+        var item = e.target.getAttribute('data-itemname');
+        var table = e.target.getAttribute('data-table');
+
+        console.log(item,table);
+
+        fetch(`/db/remove/${table}/${item}`,{
+            method:"DELETE"
+        })
+
+        location.reload()
+   
+    }
+</script>
